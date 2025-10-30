@@ -112,25 +112,22 @@ namespace DependencyInjection
             //services.AddTransient<IClassC, ClassC1>();
 
             //Đăng kí dịch vụ kiểu Scoped
-            services.AddScoped<IClassC, ClassC1>();
+            //services.AddScoped<IClassC, ClassC1>();
+
+            // ClassA
+            // IClassC, ClassC, ClassC1
+            // IClassB, ClassB, ClassB1
+
+            services.AddSingleton<ClassA, ClassA>();
+            services.AddSingleton<ClassB, ClassB>();
+            services.AddSingleton<IClassC, ClassC>();
 
             var provider = services.BuildServiceProvider();
 
-            for (int i = 0; i < 5; i++)
-            {
-                IClassC c = provider.GetService<IClassC>();
-                Console.WriteLine(c.GetHashCode());
-            }
+            ClassA a = provider.GetService<ClassA>();
+            a.ActionA();
 
-            using (var scope = provider.CreateScope())
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    var provider1 = scope.ServiceProvider;
-                    IClassC c = provider1.GetService<IClassC>();
-                    Console.WriteLine(c.GetHashCode());
-                }
-            }
+          
         }
     }
 }
